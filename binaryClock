@@ -1,0 +1,73 @@
+#!/usr/bin/python3
+
+import datetime
+import sys
+import pygame
+import time
+
+def binaryArr(time):
+    arr = []
+    for digit in time:
+        binary = "{0:b}".format(int(digit))
+        arr.append(binary)
+    return arr
+
+
+def clock(win, arr, start, height, cube, gaps):
+    yOffset = start[1] + height
+    for x, row in enumerate(arr):
+        for y, col in enumerate(row[::-1]):
+            if col == '1':
+                color = BLACK
+            else:
+                color = GREY
+
+            xPos = start[0] + gaps[0]*x + cube*x 
+            yPos = yOffset  - gaps[1]*y - cube*(y+1)  # why y+1? you tell me
+            rect = (xPos, yPos, cube, cube)
+            pygame.draw.rect(win, color, rect)
+
+# color palette 3
+
+BLACK = (72, 72, 72)
+WHITE = (243, 243, 243)
+GREY = (233, 220, 190)
+BLUE = (225, 224, 243)
+
+background = WHITE
+cube = 50
+gaps = (10, 10)
+clockWidth  = gaps[0] * 5 + cube * 6
+clockHeight = gaps[1] * 3 + cube * 4
+size = xSize, ySize = (550, 400)
+start = ((xSize - clockWidth) / 2, (ySize - clockHeight) / 2)
+print('Start: ' + str(start))
+print('ySize: ' + str(ySize))
+print('clockHeight: ' + str(clockHeight))
+
+
+pygame.init()
+
+win = pygame.display.set_mode(size)
+pygame.display.set_caption('Binary Clock')
+
+timeOld = datetime.datetime.now().strftime('%H%M%S')
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: 
+            sys.exit()
+
+    win.fill(background)
+    timeNow = datetime.datetime.now().strftime('%H%M%S')
+    #timeNow = '061012'
+
+
+    arr = binaryArr(timeNow)
+    print(arr)
+
+    #arr = ['0000', '0110', '001', '00', '01', '010']
+    # clock(win, arr, start, height, cube, gaps):
+    clock(win, arr, start, clockHeight, cube, gaps)
+    pygame.display.update()
+    time.sleep(1)
