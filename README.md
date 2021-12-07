@@ -1,2 +1,4 @@
 # binaryClock
-binary clock in pygame
+binary clock made in pygame
+
+![binaryClock](binaryClock.png)
